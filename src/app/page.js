@@ -9,7 +9,19 @@ export default function Home() {
     <div className="min-h-screen bg-white font-sans dark:bg-black">
       <main>
         <section className="relative overflow-hidden">
-          <div className="mx-auto max-w-6xl px-6 pt-20 pb-16">
+          <div className="mx-auto max-w-6xl px-6 pt-8 md:pt-20 pb-16">
+            <div className="relative mb-6 md:hidden">
+              <div className="relative h-48 w-full overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800">
+                <Image
+                  src="/images/rds-sona-topas-tower.png"
+                  alt="RDS Sona Topas Tower"
+                  fill
+                  className="object-cover object-top"
+                  priority
+                  sizes="100vw"
+                />
+              </div>
+            </div>
             <div className="grid items-center gap-10 md:grid-cols-2">
               <div>
                 <Badge className="mb-4">
@@ -64,7 +76,16 @@ export default function Home() {
                 </div>
               </div>
               <div className="relative hidden md:block">
-                <div className="aspect-square w-full rounded-2xl border border-neutral-200 bg-gradient-to-br from-neutral-100 to-white dark:border-neutral-800 dark:from-neutral-900 dark:to-black" />
+                <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-xl">
+                  <Image
+                    src="/images/rds-sona-topas-tower.png"
+                    alt="RDS Sona Topas Tower"
+                    fill
+                    className="object-cover object-top"
+                    priority
+                    sizes="(min-width: 768px) 50vw, 100vw"
+                  />
+                </div>
               </div>
             </div>
           </div>
