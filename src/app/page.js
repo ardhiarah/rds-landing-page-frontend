@@ -25,7 +25,7 @@ export default function Home() {
                   kelulusan tinggi.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <a href="#layanan">
+                  <a href="/services">
                     <Button size="lg">Lihat Layanan</Button>
                   </a>
                   <a
@@ -91,37 +91,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="testimoni" className="py-16">
-          <div className="mx-auto max-w-6xl px-6">
-            <h2 className="text-2xl font-semibold text-black dark:text-white">
-              Testimoni
-            </h2>
-            <div className="mt-8 grid gap-6 sm:grid-cols-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Officer – Bank XYZ</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  Program pembekalan sangat komprehensif, latihan soalnya
-                  membantu kami mencapai kelulusan maksimal.
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Risk Manager – Bank ABC</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  Trainer profesional dan materi up to date membuat tim kami
-                  lebih siap menghadapi ujian sertifikasi.
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
         <section
           id="layanan"
-          className="bg-neutral-50 py-16 dark:bg-neutral-950"
+          className="bg-neutral-50 pb-16 dark:bg-neutral-950"
         >
           <div className="mx-auto max-w-6xl px-6">
             <h2 className="text-2xl font-semibold text-black dark:text-white">
@@ -235,18 +207,15 @@ export default function Home() {
           </div>
         </section>
 
-        <section
-          id="kontak"
-          className="bg-neutral-50 py-16 dark:bg-neutral-950"
-        >
+        <section className="bg-neutral-50 py-16 dark:bg-neutral-950">
           <div className="mx-auto max-w-6xl px-6">
             <div className="flex flex-col items-center text-center">
               <h2 className="text-2xl font-semibold text-black dark:text-white">
-                Siap Memulai?
+                Hubungi Kami
               </h2>
               <p className="mt-2 max-w-2xl text-neutral-700 dark:text-neutral-300">
-                Hubungi kami untuk menyusun program pelatihan yang sesuai
-                kebutuhan institusi Anda.
+                Isi formulir untuk konsultasi program pelatihan dan pembekalan
+                sertifikasi Manajemen Risiko.
               </p>
               <div className="mt-8 w-full">
                 <ContactForm />

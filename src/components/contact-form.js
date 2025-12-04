@@ -25,13 +25,19 @@ export default function ContactForm() {
       });
       const json = await res.json();
       if (res.ok && json?.ok) {
-        setStatus({ type: "success", message: "Terima kasih! Kami akan segera menghubungi Anda." });
+        setStatus({
+          type: "success",
+          message: "Terima kasih! Kami akan segera menghubungi Anda.",
+        });
         form.reset();
       } else {
         throw new Error(json?.message || "Terjadi kesalahan.");
       }
     } catch (err) {
-      setStatus({ type: "error", message: "Gagal mengirim formulir. Coba lagi." });
+      setStatus({
+        type: "error",
+        message: "Gagal mengirim formulir. Coba lagi.",
+      });
     } finally {
       setLoading(false);
     }
@@ -39,28 +45,60 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={onSubmit} className="mx-auto w-full max-w-xl space-y-4">
+      <h1 className="text-center mt-3 text-3xl font-bold text-black dark:text-white">
+        Formulir Kontak
+      </h1>
       <div className="grid gap-2">
         <Label htmlFor="nama">Nama</Label>
         <Input id="nama" name="nama" placeholder="Nama lengkap" required />
       </div>
       <div className="grid gap-2">
         <Label htmlFor="email">Email</Label>
-        <Input id="email" name="email" type="email" placeholder="nama@perusahaan.com" required />
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="nama@perusahaan.com"
+          required
+        />
       </div>
       <div className="grid gap-2">
         <Label htmlFor="institusi">Institusi</Label>
-        <Input id="institusi" name="institusi" placeholder="Nama bank/lembaga" />
+        <Input
+          id="institusi"
+          name="institusi"
+          placeholder="Nama bank/lembaga"
+        />
       </div>
       <div className="grid gap-2">
         <Label htmlFor="pesan">Pesan</Label>
-        <Textarea id="pesan" name="pesan" placeholder="Kebutuhan pelatihan/sertifikasi" required />
+        <Textarea
+          id="pesan"
+          name="pesan"
+          placeholder="Kebutuhan pelatihan/sertifikasi"
+          required
+        />
       </div>
       <div className="flex items-center gap-3">
-        <Button type="submit" size="lg" disabled={loading}>{loading ? "Mengirim..." : "Kirim"}</Button>
-        <a href="mailto:info@rds-indonesia.com"><Button variant="outline" size="lg" type="button">Email Langsung</Button></a>
+        <Button type="submit" size="lg" disabled={loading}>
+          {loading ? "Mengirim..." : "Kirim"}
+        </Button>
+        <a href="mailto:info@rds-indonesia.com">
+          <Button variant="outline" size="lg" type="button">
+            Email Langsung
+          </Button>
+        </a>
       </div>
       {status && (
-        <p className={`${status.type === "success" ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}>{status.message}</p>
+        <p
+          className={`${
+            status.type === "success"
+              ? "text-green-600 dark:text-green-400"
+              : "text-red-600 dark:text-red-400"
+          }`}
+        >
+          {status.message}
+        </p>
       )}
     </form>
   );
