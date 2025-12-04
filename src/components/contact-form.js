@@ -5,10 +5,14 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
+import { usePathname } from "next/navigation";
 
 export default function ContactForm() {
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const pathname = usePathname();
+  const isKontakPage = pathname === "/kontak";
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -45,9 +49,11 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={onSubmit} className="mx-auto w-full max-w-xl space-y-4">
-      <h1 className="text-center mt-3 text-3xl font-bold text-black dark:text-white">
-        Formulir Kontak
-      </h1>
+      {isKontakPage && (
+        <h3 className="mt-20 text-center text-2xl font-bold text-black dark:text-white">
+          Formulir Kontak
+        </h3>
+      )}
       <div className="grid gap-2">
         <Label htmlFor="nama">Nama</Label>
         <Input id="nama" name="nama" placeholder="Nama lengkap" required />

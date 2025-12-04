@@ -25,7 +25,7 @@ export default function Home() {
                   kelulusan tinggi.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <a href="/services">
+                  <a href="/layanan">
                     <Button size="lg">Lihat Layanan</Button>
                   </a>
                   <a

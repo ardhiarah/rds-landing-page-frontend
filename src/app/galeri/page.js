@@ -1,11 +1,9 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import Image from "next/image";
 
 export const metadata = {
-  title: "Gallery | RDS Risk Management",
+  title: "Galeri | RDS Risk Management",
   description:
     "Dokumentasi program refreshment, pembekalan, dan kegiatan RDS bersama perbankan.",
 };
@@ -41,7 +39,7 @@ export default function GalleryPage() {
       <main className="mx-auto max-w-6xl px-6 py-12">
         <div className="flex items-center justify-between">
           <div>
-            <Badge>Gallery</Badge>
+            <Badge>Galeri</Badge>
             <h1 className="mt-3 text-3xl font-bold text-black dark:text-white">
               Dokumentasi Kegiatan
             </h1>

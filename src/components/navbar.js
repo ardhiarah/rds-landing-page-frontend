@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { createPortal } from "react-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -12,7 +14,7 @@ import {
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const [closing, setClosing] = useState(false);
+  const pathname = usePathname();
   const canUseDOM =
     typeof window !== "undefined" && typeof document !== "undefined";
   useEffect(() => {
@@ -25,12 +27,24 @@ export default function Navbar() {
   }, [open]);
 
   const handleClose = () => {
-    setClosing(true);
-    setTimeout(() => {
-      setOpen(false);
-      setClosing(false);
-    }, 350);
+    setOpen(false);
   };
+
+  const isActive = (href) => {
+    if (!href) return false;
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(href + "/");
+  };
+
+  const desktopItemClass = (href) =>
+    `${navigationMenuTriggerStyle()} ${
+      isActive(href) ? "bg-accent text-accent-foreground" : ""
+    }`;
+
+  const mobileLinkClass = (href) =>
+    `block rounded-md px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground ${
+      isActive(href) ? "bg-accent text-accent-foreground" : ""
+    }`;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-neutral-200 bg-white/70 backdrop-blur dark:border-neutral-800 dark:bg-black/70">
@@ -46,51 +60,48 @@ export default function Navbar() {
         <nav className="hidden items-center gap-1 md:flex">
           <NavigationMenu>
             <NavigationMenuItem>
-              <NavigationMenuLink
-                asChild
-                className={navigationMenuTriggerStyle()}
-              >
+              <NavigationMenuLink asChild className={desktopItemClass("/")}>
                 <Link href="/">Beranda</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink
                 asChild
-                className={navigationMenuTriggerStyle()}
+                className={desktopItemClass("/tentang")}
               >
-                <Link href="/about">Tentang</Link>
+                <Link href="/tentang">Tentang</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink
                 asChild
-                className={navigationMenuTriggerStyle()}
+                className={desktopItemClass("/layanan")}
               >
-                <Link href="/services">Layanan</Link>
+                <Link href="/layanan">Layanan</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink
                 asChild
-                className={navigationMenuTriggerStyle()}
+                className={desktopItemClass("/klien")}
               >
-                <Link href="/clients">Klien</Link>
+                <Link href="/klien">Klien</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink
                 asChild
-                className={navigationMenuTriggerStyle()}
+                className={desktopItemClass("/galeri")}
               >
-                <Link href="/gallery">Gallery</Link>
+                <Link href="/galeri">Galeri</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink
                 asChild
-                className={navigationMenuTriggerStyle()}
+                className={desktopItemClass("/kontak")}
               >
-                <Link href="/contact">Kontak</Link>
+                <Link href="/kontak">Kontak</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenu>
@@ -98,103 +109,105 @@ export default function Navbar() {
 
         <button
           aria-label="Menu"
-          className="md:hidden inline-flex items-center justify-center rounded-md border border-neutral-200 bg-white p-2 text-neutral-700 dark:border-neutral-800 dark:bg-black dark:text-neutral-300"
+          className="cursor-pointer select-none md:hidden inline-flex items-center justify-center rounded-md border border-neutral-200 bg-white p-2 text-neutral-700 dark:border-neutral-800 dark:bg-black dark:text-neutral-300"
           onClick={() => {
-            setClosing(false);
             setOpen(true);
           }}
         >
           <Menu className="size-5" />
         </button>
       </div>
-      {open &&
-        canUseDOM &&
+      {canUseDOM &&
         createPortal(
-          <div
-            role="dialog"
-            aria-modal="true"
-            className={`fixed inset-0 z-[100] ${
-              closing
-                ? "animate-out fade-out duration-300 ease-in"
-                : "animate-in fade-in duration-300 ease-out"
-            } bg-black/50 dark:bg-black/60`}
-            onClick={handleClose}
-          >
-            <div
-              className={`absolute right-0 top-0 h-dvh w-4/5 max-w-sm border-l border-neutral-200 bg-white px-6 py-4 ${
-                closing
-                  ? "animate-out fade-out slide-out-to-right-2 duration-350 ease-in"
-                  : "animate-in fade-in slide-in-from-right-2 duration-350 ease-out"
-              } dark:border-neutral-800 dark:bg-black`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-center justify-between">
-                <Link
-                  href="/"
-                  className="flex items-center gap-2"
-                  onClick={handleClose}
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                role="dialog"
+                aria-modal="true"
+                className="fixed inset-0 z-100 bg-black/50 dark:bg-black/60"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
+                onClick={handleClose}
+              >
+                <motion.div
+                  className="absolute right-0 top-0 h-dvh w-4/5 max-w-sm border-l border-neutral-200 bg-white px-6 py-4 dark:border-neutral-800 dark:bg-black"
+                  initial={{ x: "100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "100%" }}
+                  transition={{ type: "spring", stiffness: 280, damping: 28 }}
+                  onClick={(e) => e.stopPropagation()}
                 >
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-black text-white dark:bg-white dark:text-black">
-                    R
-                  </span>
-                  <span className="text-sm font-bold tracking-wide">
-                    RDS Risk Management
-                  </span>
-                </Link>
-                <button
-                  aria-label="Tutup"
-                  className="inline-flex items-center justify-center rounded-md border border-neutral-200 bg-white p-2 text-neutral-700 dark:border-neutral-800 dark:bg-black dark:text-neutral-300"
-                  onClick={handleClose}
-                >
-                  <X className="size-5" />
-                </button>
-              </div>
-              <div className="mt-6 space-y-3">
-                <Link
-                  href="/"
-                  className="block rounded-md px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
-                  onClick={handleClose}
-                >
-                  Beranda
-                </Link>
-                <Link
-                  href="/about"
-                  className="block rounded-md px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
-                  onClick={handleClose}
-                >
-                  Tentang
-                </Link>
-                <Link
-                  href="/services"
-                  className="block rounded-md px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
-                  onClick={handleClose}
-                >
-                  Layanan
-                </Link>
-                <Link
-                  href="/clients"
-                  className="block rounded-md px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
-                  onClick={handleClose}
-                >
-                  Klien
-                </Link>
-                <Link
-                  href="/gallery"
-                  className="block rounded-md px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
-                  onClick={handleClose}
-                >
-                  Gallery
-                </Link>
-                <Link
-                  href="/contact"
-                  className="block rounded-md px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
-                  onClick={handleClose}
-                >
-                  Kontak
-                </Link>
-              </div>
-            </div>
-          </div>,
+                  <div className="flex items-center justify-between">
+                    <Link
+                      href="/"
+                      className="flex items-center gap-2"
+                      onClick={handleClose}
+                    >
+                      <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-black text-white dark:bg-white dark:text-black">
+                        R
+                      </span>
+                      <span className="text-sm font-bold tracking-wide">
+                        RDS Risk Management
+                      </span>
+                    </Link>
+                    <button
+                      aria-label="Tutup"
+                      className="cursor-pointer select-none inline-flex items-center justify-center rounded-md border border-neutral-200 bg-white p-2 text-neutral-700 dark:border-neutral-800 dark:bg-black dark:text-neutral-300"
+                      onClick={handleClose}
+                    >
+                      <X className="size-5" />
+                    </button>
+                  </div>
+                  <div className="mt-6 space-y-3">
+                    <Link
+                      href="/"
+                      className={mobileLinkClass("/")}
+                      onClick={handleClose}
+                    >
+                      Beranda
+                    </Link>
+                    <Link
+                      href="/tentang"
+                      className={mobileLinkClass("/tentang")}
+                      onClick={handleClose}
+                    >
+                      Tentang
+                    </Link>
+                    <Link
+                      href="/layanan"
+                      className={mobileLinkClass("/layanan")}
+                      onClick={handleClose}
+                    >
+                      Layanan
+                    </Link>
+                    <Link
+                      href="/klien"
+                      className={mobileLinkClass("/klien")}
+                      onClick={handleClose}
+                    >
+                      Klien
+                    </Link>
+                    <Link
+                      href="/galeri"
+                      className={mobileLinkClass("/galeri")}
+                      onClick={handleClose}
+                    >
+                      Galeri
+                    </Link>
+                    <Link
+                      href="/kontak"
+                      className={mobileLinkClass("/kontak")}
+                      onClick={handleClose}
+                    >
+                      Kontak
+                    </Link>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
           document.body
         )}
     </header>
